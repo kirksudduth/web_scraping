@@ -11,4 +11,4 @@ soup = BeautifulSoup(page.content, 'html.parser')
 image = soup.findAll('img')
 img = image[0]
 
-print(img)
+print(img.attrs['src'])
