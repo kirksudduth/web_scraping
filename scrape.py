@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import smtplib
+import shutil
+
 
 URL = 'https://apod.nasa.gov/apod/astropix.html'
 headers = {
@@ -11,4 +13,13 @@ soup = BeautifulSoup(page.content, 'html.parser')
 image = soup.findAll('img')
 img = image[0]
 
-print(img.attrs['src'])
+url_base = URL
+url_ext = img.attrs['src']
+full_url = url_base + url_ext
+
+r = requests.get(full_url, stream=True)
+
+if r.status_code == 200:
+    with open("Pictures/nasa_apotd/SCRAPED.jpg", 'wb') as f:
+        r.raw.decode_content = True
+        shutil.copyfileobj(r.raw, f)
