@@ -23,10 +23,9 @@ url_ext = img.attrs['src']
 full_url = url_base + url_ext
 
 r = requests.get(full_url, stream=True)
-print("Today: ", date[1:6])
+print("Today: ", date[1:7]+date[7:16])
 
 if r.status_code == 200:
     with open("/Users/kirk/Pictures/nasa_apotd/SCRAPED.jpg", 'w+b') as f:
-        print("F: ", f)
         r.raw.decode_content = True
         shutil.copyfileobj(r.raw, f)
