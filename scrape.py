@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import smtplib
 import shutil
+import re
 
 # Followed this great tutorial 
 # https://towardsdatascience.com/a-tutorial-on-scraping-images-from-the-web-using-beautifulsoup-206a7633e948
@@ -15,8 +16,12 @@ page = requests.get(URL, headers=headers)
 soup = BeautifulSoup(page.content, 'html.parser')
 image = soup.findAll('img')
 p = soup.findAll('p')
+# date string is located in date variable
 date = str(p[1].getText())
 img = image[0]
+
+regex = re.compile('February')
+print("Well??", regex.search(date))
 
 url_base = URL
 url_ext = img.attrs['src']
