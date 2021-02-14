@@ -20,8 +20,9 @@ p = soup.findAll('p')
 date = str(p[1].getText())
 img = image[0]
 
-regex = re.compile('February')
-print("Well??", regex.search(date))
+# list of months
+months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
 
 url_base = URL
 url_ext = img.attrs['src']
@@ -31,6 +32,9 @@ r = requests.get(full_url, stream=True)
 print("Today: ", date[1:7]+date[7:16])
 
 if r.status_code == 200:
-    with open("/Users/kirk/Pictures/nasa_apotd/SCRAPED.jpg", 'w+b') as f:
-        r.raw.decode_content = True
-        shutil.copyfileobj(r.raw, f)
+    for month in months:
+        regex = re.compile(month)
+        if regex.search(date):
+            with open("/Users/kirk/Pictures/nasa_apotd/SCRAPED.jpg", 'w+b') as f:
+                r.raw.decode_content = True
+                shutil.copyfileobj(r.raw, f)
