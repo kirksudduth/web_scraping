@@ -29,18 +29,14 @@ else:
     url_base = "https://apod.nasa.gov/apod/"
     url_ext = img.attrs['src']
     full_url = url_base + url_ext
-    print("Full URL: ", full_url)
 
     r = requests.get(full_url, stream=True)
-    print("Today: ", date[1:7]+date[7:16]+date[-8:-6])
-    print("STATUS: ", r.status_code)
     day = date[-8:-6]
 
     if r.status_code == 200:
         for number, month in enumerate(months):
             regex = re.compile(month)
             if regex.search(date):
-                print("number is: ", number)
                 with open(f'/Users/kirk/Pictures/nasa_apotd/{number+1}_{day}_{date[4:6]}_nasa_pic.jpg', 'w+b') as f:
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
