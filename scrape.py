@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import requests
 from bs4 import BeautifulSoup
 import smtplib
@@ -21,6 +22,7 @@ else:
     p = soup.findAll('p')
     # date string is located in date variable
     date = str(p[1].getText())
+    split_date = date.split()
     img = image[0]
     # list of months
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -31,12 +33,16 @@ else:
     full_url = url_base + url_ext
 
     r = requests.get(full_url, stream=True)
-    day = date[-8:-6]
+    day = split_date[2]
+    year = split_date[0][-2:]
+
 
     if r.status_code == 200:
-        for number, month in enumerate(months):
+        for number, month in enumerate(months, start=1):
             regex = re.compile(month)
             if regex.search(date):
-                with open(f'/Users/kirk/Pictures/nasa_apotd/{number+1}_{day}_{date[4:6]}_nasa_pic.jpg', 'w+b') as f:
+                with open(f'/Users/kirk/Pictures/nasa_apotd/{number}_{day}_{year}_nasa_pic.jpg', 'w+b') as f:
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
+
+ 
